@@ -70,7 +70,7 @@
           <includes><include>**/*</include></includes>
           <merge>true</merge>                                        <!-- don't delete old artifacts -->
           <repositoryName>uap-java</repositoryName>      <!-- github repo name -->
-          <repositoryOwner>iToto</repositoryOwner>    <!-- github username  -->
+          <repositoryOwner>SociableLabs</repositoryOwner>    <!-- github username  -->
         </configuration>
         <executions>
           <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
