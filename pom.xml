@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <version>1.3.1-SNAPSHOT</version>
   <name>ua-parser</name>
-  <url>https://github.com/tobie/ua-parser/</url>
+  <url>https://github.com/SociableLabs/ua-parser/</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- mvn gthub hack -->
