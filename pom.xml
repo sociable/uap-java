@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <version>1.3.1-SNAPSHOT</version>
   <name>ua-parser</name>
-  <url>https://github.com/SociableLabs/uap-java</url>
+  <url>https://github.com/sociable/uap-java</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- mvn gthub hack -->
@@ -24,6 +24,19 @@
   </distributionManagement>
   <!-- /mvn gthub hack -->
   <build>
+    <!-- mvn gthub hack -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.1</version>
+          <configuration>
+            <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <!-- /mvn gthub hack -->
     <resources>
       <resource>
         <targetPath>ua_parser</targetPath>
@@ -51,13 +64,6 @@
     </testResources>
     <plugins>
       <!-- mvn gthub hack -->
-      <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.1</version>
-        <configuration>
-          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
