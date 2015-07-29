@@ -67,7 +67,7 @@
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
-        <version>0.10</version>
+        <version>0.11</version>
         <configuration>
           <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
           <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
@@ -76,7 +76,7 @@
           <includes><include>**/*</include></includes>
           <merge>true</merge>                                        <!-- don't delete old artifacts -->
           <repositoryName>uap-java</repositoryName>      <!-- github repo name -->
-          <repositoryOwner>SociableLabs</repositoryOwner>    <!-- github username  -->
+          <repositoryOwner>sociable</repositoryOwner>    <!-- github username  -->
         </configuration>
         <executions>
           <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
