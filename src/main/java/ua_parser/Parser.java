@@ -51,7 +51,7 @@ public class Parser {
   }
 
   public Client parse(String agentString) {
-    LOGGER.info("Parsing UA: " + agentString);
+    LOGGER.finer("Parsing UA: " + agentString);
     UserAgent ua = parseUserAgent(agentString);
     OS os = parseOS(agentString);
     Device device = deviceParser.parse(agentString);

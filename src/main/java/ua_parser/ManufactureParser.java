@@ -36,13 +36,13 @@ public class ManufactureParser {
                 final Matcher matcher = pattern.matcher(uaString);
 
                 if (matcher.find()) {
-                    LOGGER.info("Found match in manufacture with key: " + entry.getKey());
+                    LOGGER.finer("Found match in manufacture with key: " + entry.getKey());
                     return  new Manufacture(entry.getKey());
                 }
             }
         }
 
-        LOGGER.info("Could not find a manufacturer, using default manufaacture value");
+        LOGGER.finer("Could not find a manufacturer, using default manufacture value");
         return new Manufacture(Constants.OTHER);
     }
 
