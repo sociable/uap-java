@@ -42,23 +42,22 @@ public class Client {
    * @return           A string with format X.Y.Z
    */
   public String calculateBrowserVersion() {
-    final String browserVersion;
 
     // Build the browser version from all it's parts
     if (this.userAgent.major != null) {
-      browserVersion = this.userAgent.major;
+      final StringBuilder builder = new StringBuilder(this.userAgent.major);
 
       if (this.userAgent.minor != null) {
-        browserVersion.concat("."+this.userAgent.minor);
+        builder.append('.').append(this.userAgent.minor);
 
         if (this.userAgent.patch != null) {
-          browserVersion.concat("."+this.userAgent.patch);
+          builder.append('.').append(this.userAgent.patch);
         }
       }
+      return builder.toString();
     } else {
-      browserVersion = Constants.UNDEFINED;
+      return Constants.UNDEFINED;
     }
-    return browserVersion;
   }
 
   /**
@@ -68,17 +67,17 @@ public class Client {
    * @return iOS 8, iOS 7, Android 2.0
    */
   public String calculateOSName() {
-    final String osName = this.os.family;
+    final StringBuilder osName = new StringBuilder(this.os.family);
 
     if(this.os.major != null) {
-      osName.concat(" " + this.os.major);
+      osName.append(' ').append(this.os.major);
 
       if (this.os.minor != null) {
-        osName.concat("." + this.os.minor);
+        osName.append('.').append(this.os.minor);
       }
     }
 
-    return osName;
+    return osName.toString();
   }
 
   @Override

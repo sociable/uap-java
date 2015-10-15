@@ -58,7 +58,7 @@ public class DeviceParser {
     return new DeviceParser(configPatterns);
   }
 
-  protected static DevicePattern patternFromMap(Map<String, String> configMap) {
+  private static DevicePattern patternFromMap(Map<String, String> configMap) {
     String regex = configMap.get("regex");
     if (regex == null) {
       throw new IllegalArgumentException("Device is missing regex");

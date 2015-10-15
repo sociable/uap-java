@@ -6,19 +6,30 @@
  */
 package ua_parser;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PlatformParser {
-    private final Map<String, String> mobileDevicePatters;
-    private final Map<String, String> tabletDevicePatters;
+    private final Map<String, Pattern> mobileDevicePatters;
+    private final Map<String, Pattern> tabletDevicePatters;
     private final Logger LOGGER = Logger.getLogger(PlatformParser.class.getName());
 
     public PlatformParser(Map<String, String> mobileDevicePatters, Map<String, String> tabletDevicePatters) {
-        this.mobileDevicePatters = mobileDevicePatters;
-        this.tabletDevicePatters = tabletDevicePatters;
+        this.mobileDevicePatters = toPatternMap(mobileDevicePatters);
+        this.tabletDevicePatters = toPatternMap(tabletDevicePatters);
+    }
+
+    private static Map<String, Pattern> toPatternMap(Map<String, String> stringPatternMap) {
+        final ImmutableMap.Builder<String, Pattern> builder = ImmutableMap.<String, Pattern>builder();
+        for (Map.Entry<String,String> entry : stringPatternMap.entrySet()) {
+            builder.put(entry.getKey(), Pattern.compile(entry.getValue()));
+        }
+        return builder.build();
     }
 
     public Platform parse(String uaString) {
@@ -35,27 +46,27 @@ public class PlatformParser {
     }
 
     private boolean isMobile(String ua) {
-        LOGGER.finer("Checking For Mobile Device");
         return runPatternsOnString(mobileDevicePatters, ua);
     }
 
     private boolean isTablet(String ua) {
-        LOGGER.finer("Checking For Tablet Device");
         return runPatternsOnString(tabletDevicePatters, ua);
     }
 
-    private boolean runPatternsOnString(Map<String, String> patterns, String input) {
-        for (Map.Entry<String, String> entry : patterns.entrySet()) {
-            final Pattern pattern = Pattern.compile(entry.getValue());
+    private boolean runPatternsOnString(Map<String, Pattern> patterns, String input) {
+        for (Map.Entry<String, Pattern> entry : patterns.entrySet()) {
+            final Pattern pattern = entry.getValue();
             final Matcher matcher = pattern.matcher(input);
 
             if (matcher.find()) {
                 // Found a match
-                LOGGER.finer("Found match in device with key: " + entry.getKey());
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("Found match in device with key: " + entry.getKey());
+                }
                 return true;
             }
         }
-        LOGGER.finer("No match found, using default platform value");
+        LOGGER.finest("No match found, using default platform value");
         return false;
     }
 }

@@ -16,7 +16,7 @@ public class Manufacture {
         if (!(other instanceof Manufacture)) return false;
 
         final Manufacture o = (Manufacture) other;
-        return ((this.name != null) && this.name.equals(o.name)) || this.name == o.name;
+        return this.name == null ? o.name == null : this.name.equals(o.name);
     }
 
     @Override

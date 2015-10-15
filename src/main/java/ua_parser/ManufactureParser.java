@@ -7,8 +7,10 @@
 package ua_parser;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +21,18 @@ import java.util.regex.Pattern;
 public class ManufactureParser {
     private final Logger LOGGER = Logger.getLogger(PlatformParser.class.getName());
 
-    public ManufactureParser() { }
+    public ManufactureParser() {
+    }
+
+    private static final Multimap<String, Pattern> MANUFACTURER_OS_PATTERN_MAP =
+        ImmutableMultimap.<String, Pattern>builder()
+                         .put(Constants.APPLE, Pattern.compile("iOS"))
+                         .put(Constants.APPLE, Pattern.compile("OS X"))
+                         .put(Constants.APPLE, Pattern.compile("Macintosh"))
+                         .put(Constants.GOOGLE, Pattern.compile("Android"))
+                         .put(Constants.MICROSOFT, Pattern.compile("Windows"))
+                         .put(Constants.LINUX, Pattern.compile("Linux"))
+                         .build();
 
     /**
      * Calculate the manufacture of the hosting OS from the User Agent
@@ -28,37 +41,21 @@ public class ManufactureParser {
      * @return The manufacture of the host OS
      */
     public Manufacture parse(String uaString) {
-        for (Map.Entry<String, String> entry : getManufactureOsMap().entries()) {
+        for (Map.Entry<String, Pattern> entry : MANUFACTURER_OS_PATTERN_MAP.entries()) {
+            final String key = entry.getKey();
+            final Pattern pattern = entry.getValue();
+            final Matcher matcher = pattern.matcher(uaString);
 
-            // Itterate over all expressions assigned to a key
-            for (String regex : getManufactureOsMap().get(entry.getKey())) {
-                final Pattern pattern = Pattern.compile(regex);
-                final Matcher matcher = pattern.matcher(uaString);
-
-                if (matcher.find()) {
-                    LOGGER.finer("Found match in manufacture with key: " + entry.getKey());
-                    return  new Manufacture(entry.getKey());
+            if (matcher.find()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("Found match in manufacture with key: " + key);
                 }
+                return new Manufacture(key);
             }
         }
 
-        LOGGER.finer("Could not find a manufacturer, using default manufacture value");
+        LOGGER.finest("Could not find a manufacturer, using default manufacture value");
         return new Manufacture(Constants.OTHER);
     }
 
-    /**
-     * A simple map with manufactures along with a regex for it's representation
-     *
-     * @return a immutable map with manufacture => regex
-     */
-    private static ImmutableMultimap<String, String> getManufactureOsMap() {
-        return ImmutableMultimap.<String, String>builder().
-            put(Constants.APPLE, "iOS").
-            put(Constants.APPLE, "OS X").
-            put(Constants.APPLE, "Macintosh").
-            put(Constants.GOOGLE, "Android").
-            put(Constants.MICROSOFT, "Windows").
-            put(Constants.LINUX, "Linux").
-            build();
-    }
 }

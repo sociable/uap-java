@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.yaml.snakeyaml.Yaml;
@@ -51,7 +52,9 @@ public class Parser {
   }
 
   public Client parse(String agentString) {
-    LOGGER.finer("Parsing UA: " + agentString);
+    if (LOGGER.isLoggable(Level.FINEST)) {
+      LOGGER.finest("Parsing UA: " + agentString);
+    }
     UserAgent ua = parseUserAgent(agentString);
     OS os = parseOS(agentString);
     Device device = deviceParser.parse(agentString);
